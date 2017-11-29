@@ -13,23 +13,19 @@ type Test struct {
 
 func main() {
 	a := []int{1}
-	reflectAppend(&a, 300)
+	ReflectAppend(&a, 300)
 	fmt.Println(a)
 
 	b := []string{"hello"}
-	reflectAppend(&b, "world")
+	ReflectAppend(&b, "world")
 	fmt.Println(b)
 
 	c := []Test{Test{1, "hello"}}
-	reflectAppend(&c, Test{2, "world"})
+	ReflectAppend(&c, Test{2, "world"})
 	fmt.Println(c)
-
-	d := []Test{Test{2, "hello2"}}
-	callFunc(reflectAppend, &d, Test{3, "world"})
-	fmt.Println(d)
 }
 
-func reflectAppend(slice interface{}, value interface{}) {
+func ReflectAppend(slice interface{}, value interface{}) {
 	slicePtr := reflect.ValueOf(slice)
 	sliceValue := reflect.Indirect(slicePtr)
 	elemValue := reflect.ValueOf(value)
@@ -37,7 +33,7 @@ func reflectAppend(slice interface{}, value interface{}) {
 	sliceValue.Set(resultValue)
 }
 
-func callFunc(f interface{}, args ...interface{}) (out []interface{}, err error) {
+func ReflectCallFunc(f interface{}, args ...interface{}) (out []interface{}, err error) {
 	fv := reflect.ValueOf(f)
 	if fv.Kind() != reflect.Func {
 		return nil, errors.New("expect func type for f")
